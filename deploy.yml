@@ -19,12 +19,6 @@
       debug:
         var: docker_pull_result
 
-    - name: Start Docker service
-      become: true
-      service:
-        name: docker
-        state: started
-
     - name: Stop and remove existing container if present
       community.docker.docker_container:
         name: calculator
