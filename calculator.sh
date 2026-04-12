@@ -1,26 +1,25 @@
 #!/bin/bash
-# A simple calculator shell program
-
 echo "1. Addition"
 echo "2. Subtraction"
 echo "3. Multiplication"
 echo "4. Division"
 
-echo -n "Enter First Number: "
-read a
-echo -n "Enter Second Number: "
-read b
-echo -n "Enter the Choice: "
-read ch
+read -p "Enter First Number: " num1
+read -p "Enter Second Number: " num2
+read -p "Enter the Choice: " choice
 
-case $ch in
-   1) res=`expr $a + $b`
-   ;;
-   2) res=`expr $a - $b`
-   ;;
-   3) res=`expr $a \* $b`
-   ;;
-   4) res=`expr $a / $b`
-   ;;
+case $choice in
+    1) result=$(echo "$num1 + $num2" | bc)
+       echo "Result : $result" ;;
+    2) result=$(echo "$num1 - $num2" | bc)
+       echo "Result : $result" ;;
+    3) result=$(echo "$num1 * $num2" | bc)
+       echo "Result : $result" ;;
+    4) if [ "$num2" -eq 0 ]; then
+           echo "Error: Division by zero"
+       else
+           result=$(echo "scale=2; $num1 / $num2" | bc)
+           echo "Result : $result"
+       fi ;;
+    *) echo "Invalid choice: $choice. Please enter 1, 2, 3, or 4." ;;
 esac
-echo "Result : $res"
