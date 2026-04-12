@@ -1,6 +1,8 @@
 ---
 - name: Pull Docker Image from Docker Hub
   hosts: localhost
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
   remote_user: raju
   become: false
   tasks:
