@@ -5,29 +5,41 @@
     ansible_python_interpreter: /usr/bin/python3
   remote_user: raju
   become: false
+
   tasks:
+
     - name: Pull Docker Image
       community.docker.docker_image:
         name: "iiitb/calculator"
         source: pull
+        force_source: true
       register: docker_pull_result
 
     - name: Display Docker Pull Result
       debug:
         var: docker_pull_result
-        
+
     - name: Start Docker service
+      become: true
       service:
         name: docker
         state: started
-        
-    - name: stop container
-      shell: docker stop calculator
-      
-    - name: rm container
-      shell: docker rm calculator
-     
-    - name: Running container
-      shell: docker run -it -d --name calculator iiitb/calculator /bin/bash
 
+    - name: Stop and remove existing container if present
+      community.docker.docker_container:
+        name: calculator
+        state: absent
 
+    - name: Run calculator container
+      community.docker.docker_container:
+        name: calculator
+        image: "iiitb/calculator"
+        state: started
+        detach: true
+        tty: true
+        command: /bin/bash
+      register: container_result
+
+    - name: Display container status
+      debug:
+        msg: "Container '{{ container_result.container.Name }}' is running with ID {{ container_result.container.Id[:12] }}"
