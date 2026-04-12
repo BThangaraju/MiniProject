@@ -1,7 +1,11 @@
 FROM ubuntu:latest
 
-# Install dos2unix utility
-RUN apt-get update && apt-get install -y dos2unix
+# Install required utilities
+RUN apt-get update && apt-get install -y \
+    dos2unix \
+    bc \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 # Set the working directory
 WORKDIR /app
