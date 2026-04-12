@@ -7,7 +7,7 @@
   become: false
   tasks:
     - name: Pull Docker Image
-      docker_image:
+      community.docker.docker_image:
         name: "iiitb/calculator"
         source: pull
       register: docker_pull_result
